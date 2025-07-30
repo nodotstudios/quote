@@ -26,7 +26,6 @@ export default function App() {
   const [subject, setSubject] = useState('');
   const [termsUrl, setTermsUrl] = useState('');
   const [items, setItems] = useState([]);
-
   const [discount, setDiscount] = useState({ type: '%', value: 0 });
   const [taxes, setTaxes] = useState([]);
   const [currency, setCurrency] = useState('₹');
@@ -58,15 +57,15 @@ export default function App() {
   const total = taxable + taxAmounts.reduce((a, t) => a + t.amount, 0);
 
   const exportPDF = async () => {
-    // Page 1
     const el1 = document.getElementById('pdf');
-    const canvas1 = await html2canvas(el1);
-    const img1 = canvas1.toDataURL('image/png');
+    const canvas1 = await html2canvas(el1, { scale: 1.5 }); // lower resolution
+    const img1 = canvas1.toDataURL('image/jpeg', 0.6); // compressed JPEG
+
     const pdf = new jsPDF('p', 'mm', 'a4');
     pdf.setFont('helvetica');
-    pdf.addImage(img1, 'PNG', 0, 0, 210, 297);
+    pdf.addImage(img1, 'JPEG', 0, 0, 210, 297);
 
-    // Page 2: Terms & Conditions link
+    // Page 2: Terms
     pdf.addPage();
     pdf.setFontSize(14);
     pdf.text('Terms & Conditions', 14, 20);
@@ -86,17 +85,13 @@ export default function App() {
     <div className="p-4 max-w-xl mx-auto">
       <h1 className="text-xl font-bold mb-4">Project Estimate</h1>
       <div className="space-y-3">
-        {/* Shared By field */}
         <input value={sharedBy} onChange={e => setSharedBy(e.target.value)} placeholder="Shared By" className="w-full border p-2 rounded" />
         <input value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Customer Name" className="w-full border p-2 rounded" />
         <input type="date" value={quoteDate} onChange={e => setQuoteDate(e.target.value)} className="w-full border p-2 rounded" />
         <input value={projectName} onChange={e => setProjectName(e.target.value)} placeholder="Project Name" className="w-full border p-2 rounded" />
         <input value={subject} onChange={e => setSubject(e.target.value)} placeholder="Subject" className="w-full border p-2 rounded" />
-
-        {/* Terms URL input */}
         <input type="url" value={termsUrl} onChange={e => setTermsUrl(e.target.value)} placeholder="Terms & Conditions URL" className="w-full border p-2 rounded" />
 
-        {/* Currency selector */}
         <div className="flex items-center space-x-2">
           <label>Currency:</label>
           <select value={currency} onChange={e => setCurrency(e.target.value)} className="border p-2 rounded">
