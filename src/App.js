@@ -58,8 +58,8 @@ export default function App() {
 
   const exportPDF = async () => {
     const el1 = document.getElementById('pdf');
-    const canvas1 = await html2canvas(el1, { scale: 1.5 }); // lower resolution
-    const img1 = canvas1.toDataURL('image/jpeg', 0.6); // compressed JPEG
+    const canvas1 = await html2canvas(el1, { scale: 1.5 });
+    const img1 = canvas1.toDataURL('image/jpeg', 0.6);
 
     const pdf = new jsPDF('p', 'mm', 'a4');
     pdf.setFont('helvetica');
@@ -82,35 +82,35 @@ export default function App() {
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
+    <div className="p-4 px-2 max-w-3xl mx-auto">
       <h1 className="text-xl font-bold mb-4">Project Estimate</h1>
       <div className="space-y-3">
-        <input value={sharedBy} onChange={e => setSharedBy(e.target.value)} placeholder="Shared By" className="w-full border p-2 rounded" />
-        <input value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Customer Name" className="w-full border p-2 rounded" />
-        <input type="date" value={quoteDate} onChange={e => setQuoteDate(e.target.value)} className="w-full border p-2 rounded" />
-        <input value={projectName} onChange={e => setProjectName(e.target.value)} placeholder="Project Name" className="w-full border p-2 rounded" />
-        <input value={subject} onChange={e => setSubject(e.target.value)} placeholder="Subject" className="w-full border p-2 rounded" />
-        <input type="url" value={termsUrl} onChange={e => setTermsUrl(e.target.value)} placeholder="Terms & Conditions URL" className="w-full border p-2 rounded" />
+        <input value={sharedBy} onChange={e => setSharedBy(e.target.value)} placeholder="Shared By" className="w-full border p-2 rounded-md" />
+        <input value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Customer Name" className="w-full border p-2 rounded-md" />
+        <input type="date" value={quoteDate} onChange={e => setQuoteDate(e.target.value)} className="w-full border p-2 rounded-md" />
+        <input value={projectName} onChange={e => setProjectName(e.target.value)} placeholder="Project Name" className="w-full border p-2 rounded-md" />
+        <input value={subject} onChange={e => setSubject(e.target.value)} placeholder="Subject" className="w-full border p-2 rounded-md" />
+        <input type="url" value={termsUrl} onChange={e => setTermsUrl(e.target.value)} placeholder="Terms & Conditions URL" className="w-full border p-2 rounded-md" />
 
         <div className="flex items-center space-x-2">
           <label>Currency:</label>
-          <select value={currency} onChange={e => setCurrency(e.target.value)} className="border p-2 rounded">
+          <select value={currency} onChange={e => setCurrency(e.target.value)} className="border p-2 rounded-md">
             <option value="₹">INR (₹)</option>
             <option value="$">USD ($)</option>
             <option value="€">EUR (€)</option>
           </select>
         </div>
 
-        <div className="border p-2 rounded">
+        <div className="border p-2 rounded-md">
           {items.map((it, i) => (
             <div key={i} className="grid grid-cols-5 gap-1 items-center mb-2">
-              <select value={it.type} onChange={e => updateItem(i, 'type', e.target.value)} className="border p-1 col-span-2">
+              <select value={it.type} onChange={e => updateItem(i, 'type', e.target.value)} className="border p-1 col-span-2 rounded-md">
                 <option value="">Select</option>
                 {Object.keys(templates).map(k => <option key={k}>{k}</option>)}
               </select>
-              <input value={it.desc} onChange={e => updateItem(i, 'desc', e.target.value)} placeholder="Desc" className="border p-1" />
-              <input type="number" value={it.qty} onChange={e => updateItem(i, 'qty', e.target.value)} className="border p-1 w-12" />
-              <input type="number" value={it.price} onChange={e => updateItem(i, 'price', e.target.value)} className="border p-1 w-16" />
+              <input value={it.desc} onChange={e => updateItem(i, 'desc', e.target.value)} placeholder="Desc" className="border p-1 rounded-md" />
+              <input type="number" value={it.qty} onChange={e => updateItem(i, 'qty', e.target.value)} className="border p-1 w-12 rounded-md" />
+              <input type="number" value={it.price} onChange={e => updateItem(i, 'price', e.target.value)} className="border p-1 w-16 rounded-md" />
               <div className="text-right">{currency}{it.total.toFixed(2)}</div>
             </div>
           ))}
@@ -119,27 +119,27 @@ export default function App() {
 
         <div className="flex items-center space-x-2">
           <label>Discount:</label>
-          <select value={discount.type} onChange={e => setDiscount({ ...discount, type: e.target.value })} className="border p-1 rounded">
+          <select value={discount.type} onChange={e => setDiscount({ ...discount, type: e.target.value })} className="border p-1 rounded-md">
             <option value="%">%</option>
             <option value="flat">₹</option>
           </select>
-          <input type="number" value={discount.value} onChange={e => setDiscount({ ...discount, value: parseFloat(e.target.value) })} className="border p-1 w-20 rounded" />
+          <input type="number" value={discount.value} onChange={e => setDiscount({ ...discount, value: parseFloat(e.target.value) })} className="border p-1 w-20 rounded-md" />
         </div>
 
         {taxes.map((t, i) => (
           <div key={i} className="flex items-center space-x-2">
             <input value={t.label} onChange={e => {
               const nt = [...taxes]; nt[i].label = e.target.value; setTaxes(nt);
-            }} placeholder="Tax name" className="border p-1 rounded w-24" />
+            }} placeholder="Tax name" className="border p-1 rounded-md w-24" />
             <select value={t.type} onChange={e => {
               const nt = [...taxes]; nt[i].type = e.target.value; setTaxes(nt);
-            }} className="border p-1 rounded">
+            }} className="border p-1 rounded-md">
               <option value="%">%</option>
               <option value="flat">₹</option>
             </select>
             <input type="number" value={t.value} onChange={e => {
               const nt = [...taxes]; nt[i].value = parseFloat(e.target.value); setTaxes(nt);
-            }} className="border p-1 w-20 rounded" />
+            }} className="border p-1 w-20 rounded-md" />
           </div>
         ))}
         <button onClick={() => setTaxes([...taxes, { label: 'New', type: '%', value: 0 }])} className="text-blue-600">+ Add Tax</button>
@@ -152,7 +152,7 @@ export default function App() {
           <p>In Words: {convertToWords(total)}</p>
         </div>
 
-        <button onClick={exportPDF} className="bg-green-600 text-white w-full p-2 rounded">Share PDF</button>
+        <button onClick={exportPDF} className="bg-green-600 text-white w-full p-2 rounded-md">Share PDF</button>
       </div>
 
       <div id="pdf" className="hidden p-4" style={{ width: '210mm', minHeight: '297mm', background: '#fff', fontFamily: 'Arial, sans-serif' }}>
